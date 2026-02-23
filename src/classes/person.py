@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from typing import Literal
 
@@ -7,40 +7,47 @@ class Person:
         self, 
         first_name: str,
         last_name: str ,
-        birdthday: datetime,
+        birthday: datetime,
         has_hair: bool,
         gender: Literal['male', 'female', 'other'],
         hair_color: str = None,
     ):
         self._first_name = first_name
         self._last_name = last_name
-        self._birdthday = birdthday
+        self._birthday = birthday
         self._has_hair = has_hair
         self._hair_color = hair_color
         self._gender = gender
 
         if self._has_hair and self._hair_color == None:
             raise ValueError(f'{self._first_name} has hair, you must set the color...!!!')
+    
+    #region old code
+    # def get_age(
+    #     self
+    # ) -> int:
+    #     # today = datetime.now()
+    #     today = date.today()
+    #     birthday = self._birthday
+    #     age: int = today.year - birthday.year
 
-    def get_age(
-        self
-    ) -> int:
-        today = datetime.now()
-        birthday = self._birdthday
-        age: int = today.year - birthday.year
-
-        if today.month < birthday.month:
-            return age - 1
-        elif today.month > birthday.month:
-            if today.day >= birthday.day:
-                return age
-            elif today.day < birthday.day:
-                return age - 1
-        elif today.month == birthday.month:
-            if today.day < birthday.day:
-                return age - 1
+    #     #region old code
+    #     # if today.month < birthday.month:
+    #     #     return age - 1
+    #     # elif today.month > birthday.month:
+    #     #     if today.day >= birthday.day:
+    #     #         return age
+    #     #     elif today.day < birthday.day:
+    #     #         return age - 1
+    #     # elif today.month == birthday.month:
+    #     #     if today.day < birthday.day:
+    #     #         return age - 1
         
-        return age
+    #     # return age
+    #     #endregion old code
+    #     is_before_birthday = (today.month, today.year) < (birthday.month, birthday.year)
+    #     return age - is_before_birthday
+    #endregion old code
 
     @property
     def first_name(self) -> str:
@@ -51,13 +58,21 @@ class Person:
         return self._last_name
     
     @property
-    def birdthday(self) -> datetime:
-        return self._birdthday
+    def birthday(self) -> datetime:
+        return self._birthday
     
     @property
-    def birdthday_str(self) -> str:
-        return self._birdthday.strftime('%Y-%m-%d')
+    def birthday_str(self) -> str:
+        return self._birthday.strftime('%Y-%m-%d')
     
+    @property
+    def age(self) -> int:
+        today: today = date.today()
+        age: int = today.year - self._birthday.year
+
+        is_before_birthday: bool = (today.month, today.day) < (self._birthday.month, self._birthday.day)
+        return age - is_before_birthday
+
     @property
     def hair(self) -> str:
         if self._has_hair:
@@ -67,3 +82,14 @@ class Person:
     @property
     def gender(self) -> str:
         return self._gender
+
+    @property
+    def full_name(self) -> str:
+        if (self._first_name and self._last_name):
+            return f'{self._first_name} {self._last_name}'
+        elif (self._first_name):
+            return self._first_name
+        elif (self._last_name):
+            return self._last_name
+        else:
+            return 'No name'
