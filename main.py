@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from src.classes.person import Person
+from src.classes.person import Person, Person_Gender
+
+PERSON_GENDERS: Person_Gender = Person_Gender()
 
 if __name__ == '__main__':
     #region variables
@@ -59,10 +61,13 @@ if __name__ == '__main__':
             else:
                 has_hair = False
                 hair_color: str = None
-            gender: str = input('Please enter the gender (male, female, other): ')
-            while gender.lower() != 'male' and gender.lower() != 'female' and gender.lower() != 'other':
-                gender: str = input('Please enter the gender (male, female, other): ')
             
+            gender: str = input(f'Please enter the gender ({PERSON_GENDERS.male}, {PERSON_GENDERS.female}, {PERSON_GENDERS.other}): ')
+            gender = gender.lower().strip()
+            while gender != PERSON_GENDERS.male and gender != PERSON_GENDERS.female and  gender != PERSON_GENDERS.other:
+                gender: str = input(f'Please enter the gender ({PERSON_GENDERS.male}, {PERSON_GENDERS.female}, {PERSON_GENDERS.other}): ')
+                gender = gender.lower().strip()
+
             person: Person = Person(
                 first_name=first_name,
                 last_name=last_name,

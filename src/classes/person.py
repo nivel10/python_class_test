@@ -2,14 +2,42 @@ from datetime import datetime, date
 
 from typing import Literal
 
+class Person_Gender:
+    male: str
+    female: str
+    other: str
+
+    def __init__(
+        self,
+        male: str = 'male',
+        female: str = 'female',
+        other: str = 'other',
+    ):
+        self.male = male
+        self.female = female
+        self.other = other
+    
+    @property
+    def __repr__(
+        self
+    ) -> str:
+        return (
+            f'Person_Gender=(male={self.male}, '
+            f'female={self.female}, '
+            f'other={self.other})'
+        )
+
 class Person:
+    # _gender: Person_Gender()
+    
     def __init__(
         self, 
         first_name: str,
         last_name: str ,
         birthday: datetime,
         has_hair: bool,
-        gender: Literal['male', 'female', 'other'],
+        # gender: Literal['male', 'female', 'other'],
+        gender: Literal[Person_Gender().male, Person_Gender().female, Person_Gender().other],
         hair_color: str = None,
     ):
         self._first_name = first_name
